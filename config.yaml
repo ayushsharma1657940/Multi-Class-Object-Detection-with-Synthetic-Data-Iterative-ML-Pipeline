@@ -1,0 +1,376 @@
+# Configuration file for Soup & Cheerios Object Detection Project
+# This file contains all configurable parameters for training, evaluation, and deployment
+
+# =============================================================================
+# PROJECT METADATA
+# =============================================================================
+project:
+  name: "soup-cheerios-detection"
+  version: "1.0.0"
+  description: "Multi-class object detection for Soup and Cheerios using YOLOv8"
+  author: "Your Name"
+  created_date: "2025-01-28"
+  
+# =============================================================================
+# DATASET CONFIGURATION
+# =============================================================================
+dataset:
+  # Dataset paths
+  root_path: "/kaggle/input/multi-class-object-detection-challenge"
+  train_images: "Starter_Dataset/train/images"
+  train_labels: "Starter_Dataset/train/labels"
+  val_images: "Starter_Dataset/val/images"
+  val_labels: "Starter_Dataset/val/labels"
+  test_images: "testImages/images"
+  
+  # Class configuration
+  classes:
+    - "soup"      # Class 0
+    - "cheerios"  # Class 1
+  
+  num_classes: 2
+  
+  # Data augmentation settings
+  augmentation:
+    enabled: true
+    mosaic: 1.0        # Mosaic augmentation probability
+    mixup: 0.1         # Mixup augmentation probability
+    copy_paste: 0.1    # Copy-paste augmentation probability
+    hsv_h: 0.015       # HSV-Hue augmentation
+    hsv_s: 0.7         # HSV-Saturation augmentation
+    hsv_v: 0.4         # HSV-Value augmentation
+    degrees: 0.0       # Image rotation (+/- deg)
+    translate: 0.1     # Image translation (+/- fraction)
+    scale: 0.5         # Image scale (+/- gain)
+    shear: 0.0         # Image shear (+/- deg)
+    perspective: 0.0   # Image perspective (+/- fraction)
+    flipud: 0.0        # Image flip up-down (probability)
+    fliplr: 0.5        # Image flip left-right (probability)
+  
+  # Dataset validation
+  validation:
+    check_images: true
+    check_labels: true
+    min_images_per_class: 10
+    max_annotation_errors: 5
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+model:
+  # Model architecture
+  architecture: "yolov8n"  # Options: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
+  pretrained: true
+  
+  # Model paths
+  weights_path: "yolov8n.pt"
+  checkpoint_dir: "models"
+  best_model_path: "models/best.pt"
+  last_model_path: "models/last.pt"
+  
+  # Export settings
+  export:
+    formats: ["pt", "onnx", "tensorrt"]  # Export formats
+    optimize: true                       # Optimize for inference
+    half_precision: false               # Use FP16
+    dynamic_axes: false                 # Dynamic input size
+    
+  # Model optimization
+  optimization:
+    pruning: false        # Model pruning
+    quantization: false   # Model quantization
+    distillation: false   # Knowledge distillation
+
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+training:
+  # Basic training parameters
+  epochs: 100
+  batch_size: 16
+  img_size: 640
+  patience: 20          # Early stopping patience
+  save_period: 10       # Save checkpoint every N epochs
+  
+  # Optimizer settings
+  optimizer:
+    type: "SGD"         # Options: SGD, Adam, AdamW
+    lr0: 0.01           # Initial learning rate
+    lrf: 0.1            # Final learning rate factor
+    momentum: 0.937     # SGD momentum
+    weight_decay: 0.0005  # Optimizer weight decay
+    warmup_epochs: 3    # Warmup epochs
+    warmup_momentum: 0.8  # Warmup initial momentum
+    warmup_bias_lr: 0.1  # Warmup initial bias learning rate
+  
+  # Loss function weights
+  loss_weights:
+    box: 7.5        # Box loss weight
+    cls: 0.5        # Classification loss weight
+    dfl: 1.5        # Distribution focal loss weight
+  
+  # Advanced training settings
+  advanced:
+    multi_scale: true      # Multi-scale training
+    label_smoothing: 0.0   # Label smoothing epsilon
+    nbs: 64               # Nominal batch size
+    overlap_mask: true    # Use overlap mask for segmentation
+    mask_ratio: 4         # Mask downsample ratio
+    dropout: 0.0          # Use dropout regularization
+    
+  # Hardware settings
+  device: "auto"        # Device: auto, cpu, cuda:0, etc.
+  workers: 8            # Number of worker threads
+  amp: true             # Automatic Mixed Precision
+
+# =============================================================================
+# VALIDATION AND EVALUATION
+# =============================================================================
+evaluation:
+  # Validation settings
+  validation_interval: 1    # Validate every N epochs
+  conf_threshold: 0.001     # Confidence threshold for validation
+  iou_threshold: 0.6        # IoU threshold for NMS
+  max_det: 300             # Maximum detections per image
+  
+  # Metrics to compute
+  metrics:
+    - "precision"
+    - "recall"
+    - "mAP50"
+    - "mAP50-95"
+    - "F1-score"
+  
+  # Test-time augmentation
+  tta: false
+  
+  # Evaluation on test set
+  test_evaluation:
+    enabled: true
+    save_predictions: true
+    save_visualizations: true
+    conf_threshold: 0.5
+
+# =============================================================================
+# INFERENCE CONFIGURATION
+# =============================================================================
+inference:
+  # Default inference settings
+  conf_threshold: 0.5      # Confidence threshold
+  iou_threshold: 0.45      # IoU threshold for NMS
+  max_det: 100            # Maximum detections per image
+  agnostic_nms: false     # Class-agnostic NMS
+  
+  # Input preprocessing
+  preprocessing:
+    resize_method: "letterbox"  # Resize method: letterbox, resize
+    normalize: true             # Normalize pixel values
+    
+  # Output postprocessing
+  postprocessing:
+    filter_by_confidence: true
+    filter_by_area: false
+    min_area: 100              # Minimum bounding box area
+    max_area: 50000           # Maximum bounding box area
+
+# =============================================================================
+# VISUALIZATION CONFIGURATION
+# =============================================================================
+visualization:
+  # Colors for each class (RGB)
+  class_colors:
+    soup: [255, 102, 102]      # Red
+    cheerios: [102, 178, 255]  # Blue
+  
+  # Visualization settings
+  line_thickness: 2
+  font_size: 0.6
+  font_thickness: 1
+  
+  # Save settings
+  save_annotated: true
+  annotation_format: "jpg"
+  dpi: 300
+
+# =============================================================================
+# LOGGING AND MONITORING
+# =============================================================================
+logging:
+  # Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Log files
+  log_dir: "logs"
+  log_file: "training.log"
+  tensorboard_dir: "runs"
+  
+  # What to log
+  log_metrics: true
+  log_images: true
+  log_model: true
+  
+  # Weights & Biases integration (optional)
+  wandb:
+    enabled: false
+    project: "soup-cheerios-detection"
+    entity: "your-username"
+    tags: ["yolov8", "object-detection", "synthetic-data"]
+  
+  # MLflow integration (optional)
+  mlflow:
+    enabled: false
+    experiment_name: "soup-cheerios-detection"
+    tracking_uri: "http://localhost:5000"
+
+# =============================================================================
+# PATHS AND DIRECTORIES
+# =============================================================================
+paths:
+  # Project directories
+  project_root: "."
+  data_dir: "data"
+  models_dir: "models"
+  results_dir: "results"
+  exports_dir: "exports"
+  configs_dir: "configs"
+  utils_dir: "utils"
+  logs_dir: "logs"
+  
+  # Output files
+  dataset_yaml: "configs/dataset.yaml"
+  training_results: "results/training_results.yaml"
+  model_pipeline: "exports/model_pipeline.pkl"
+  model_weights: "exports/model_weights.pkl"
+
+# =============================================================================
+# STREAMLIT APP CONFIGURATION
+# =============================================================================
+streamlit:
+  # App settings
+  title: "🥣 Soup & Cheerios Detector"
+  page_icon: "🎯"
+  layout: "wide"
+  
+  # Default values
+  default_confidence: 0.5
+  max_file_size: 10  # MB
+  
+  # Supported file formats
+  supported_formats: ["png", "jpg", "jpeg", "bmp", "tiff"]
+  
+  # UI settings
+  show_confidence_slider: true
+  show_class_selector: true
+  show_batch_upload: false
+  enable_webcam: false
+
+# =============================================================================
+# DEPLOYMENT CONFIGURATION
+# =============================================================================
+deployment:
+  # Model serving
+  model_format: "pkl"        # Format for deployment: pkl, onnx, tensorrt
+  batch_processing: true
+  max_batch_size: 8
+  
+  # Performance optimization
+  use_gpu: true
+  fp16: false               # Use half precision
+  optimize_for_mobile: false
+  
+  # API settings (if deploying as API)
+  api:
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+    timeout: 30
+    max_request_size: 10  # MB
+  
+  # Docker settings
+  docker:
+    base_image: "ultralytics/ultralytics:latest"
+    python_version: "3.9"
+    install_requirements: true
+
+# =============================================================================
+# ENVIRONMENT CONFIGURATION
+# =============================================================================
+environment:
+  # Python version requirement
+  python_version: ">=3.8"
+  
+  # Required packages (versions will be in requirements.txt)
+  required_packages:
+    - "torch"
+    - "ultralytics"
+    - "opencv-python"
+    - "numpy"
+    - "pillow"
+    - "matplotlib"
+    - "streamlit"
+  
+  # Environment variables
+  env_vars:
+    CUDA_VISIBLE_DEVICES: "0"
+    OMP_NUM_THREADS: "1"
+    
+# =============================================================================
+# EXPERIMENTAL FEATURES
+# =============================================================================
+experimental:
+  # Advanced techniques (use with caution)
+  self_training: false          # Self-training with pseudo-labels
+  active_learning: false        # Active learning for data selection
+  multi_model_ensemble: false   # Ensemble of multiple models
+  
+  # Research features
+  attention_mechanism: false    # Add attention layers
+  focal_loss: false            # Use focal loss instead of BCE
+  mixup_alpha: 0.2            # Mixup parameter
+  cutmix_alpha: 1.0           # CutMix parameter
+
+# =============================================================================
+# DEBUGGING AND DEVELOPMENT
+# =============================================================================
+debug:
+  # Debug settings
+  enabled: false
+  verbose: true
+  save_debug_images: false
+  
+  # Development settings
+  fast_dev_run: false      # Quick training run for testing
+  overfit_batches: 0       # Overfit on small subset for debugging
+  profile: false           # Profile training performance
+  
+  # Testing
+  unit_tests: false
+  integration_tests: false
+  performance_tests: false
+
+# =============================================================================
+# METADATA AND VERSIONING
+# =============================================================================
+metadata:
+  # Data versioning
+  data_version: "1.0"
+  data_hash: null          # Will be computed automatically
+  
+  # Model versioning
+  model_version: "1.0"
+  model_hash: null         # Will be computed automatically
+  
+  # Training session info
+  session_id: null         # Will be generated automatically
+  start_time: null         # Will be set at training start
+  end_time: null          # Will be set at training end
+  
+  # Reproducibility
+  random_seed: 42
+  deterministic: true      # Ensure reproducible results
+  
+  # Hardware info
+  hardware:
+    cpu_count: null        # Will be detected automatically
+    gpu_count: null        # Will be detected automatically
+    memory_gb: null        # Will be detected automatically

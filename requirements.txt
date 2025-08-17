@@ -1,0 +1,133 @@
+# Core ML and Computer Vision
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+Pillow>=9.5.0
+
+# Data Processing and Scientific Computing
+numpy>=1.21.0
+pandas>=1.5.0
+scipy>=1.9.0
+scikit-learn>=1.3.0
+
+# Visualization and Plotting
+matplotlib>=3.6.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Web Framework for Streamlit App
+streamlit>=1.28.0
+streamlit-webrtc>=0.47.0
+
+# Image Processing and Augmentation
+albumentations>=1.3.0
+imgaug>=0.4.0
+
+# Configuration and Serialization
+PyYAML>=6.0
+pickle-mixin>=1.0.2
+
+# Progress Bars and Utilities
+tqdm>=4.65.0
+rich>=13.0.0
+
+# File Handling and I/O
+pathlib2>=2.3.7
+glob2>=0.7
+
+# API and Web Related
+requests>=2.31.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# Jupyter Notebook (if running in Kaggle)
+jupyter>=1.0.0
+ipywidgets>=8.0.0
+
+# Model Deployment and Serving
+onnx>=1.14.0
+onnxruntime>=1.15.0
+
+# Metrics and Evaluation
+pycocotools>=2.0.6
+tensorboard>=2.13.0
+
+# Development and Testing
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Optional: GPU acceleration (uncomment if using CUDA)
+# torch-audio>=2.0.0+cu118
+# torchaudio>=2.0.0+cu118
+
+# Optional: Advanced visualization
+# gradio>=3.40.0
+
+# For handling different image formats
+imageio>=2.31.0
+imageio-ffmpeg>=0.4.8
+
+# Memory profiling and optimization
+psutil>=5.9.0
+
+# Logging
+loguru>=0.7.0
+
+# Date and time utilities
+python-dateutil>=2.8.0
+
+# Environment and system info
+python-dotenv>=1.0.0
+
+# Model versioning and experiment tracking
+# wandb>=0.15.0  # Uncomment if using Weights & Biases
+# mlflow>=2.5.0  # Uncomment if using MLflow
+
+# Additional utilities for Kaggle environment
+kaggle>=1.5.0
+
+# For creating interactive plots in Streamlit
+altair>=5.0.0
+
+# PDF generation for reports
+reportlab>=4.0.0
+
+# Excel file handling
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# Compression utilities
+zipfile36>=0.1.3
+
+# Network utilities
+urllib3>=2.0.0
+
+# Threading and multiprocessing utilities
+concurrent-futures>=3.1.1
+
+# Math and statistics
+statsmodels>=0.14.0
+
+# Color handling
+webcolors>=1.13.0
+
+# Time zone handling
+pytz>=2023.3
+
+# JSON handling
+simplejson>=3.19.0
+
+# Hash utilities
+hashlib2>=1.0.0
+
+# Base64 encoding/decoding
+base64io>=1.0.3
+
+# Regular expressions
+regex>=2023.6.3
+
+# String utilities
+fuzzywuzzy>=0.18.0
+python-levenshtein>=0.21.0
